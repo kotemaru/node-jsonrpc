@@ -1,0 +1,45 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>ダミーサーバ</title>
+<style>
+h3 {
+background-color: #e0f0ff;
+}
+form {
+	margin-left: 1em;
+}
+</style>
+</head>
+<body>
+<h1>JSONRPC コンソール</h1>
+
+	<h3>Login</h3>
+	<form method="GET" action="/login">
+		<div>
+			User: <input name="user" size="20" type="text" />
+		</div>
+		<div>
+			<input type="submit" value="login">
+		</div>
+	</form>
+
+
+	<h3>Reload</h3>
+	<form method="GET" action="/apis/reload">
+		<div>
+			User: <input name="user" size="20" type="text" />
+		</div>
+		<div>
+			Path: <input name="path" size="50" type="text"
+				value="apis/hogehoge/*.js" />
+		</div>
+		<div>
+			初期化: <input name="clear" type="checkbox" />
+		</div>
+		<div>
+			<input type="submit" value="reload">
+		</div>
+	</form>
+</body>
+</html>
