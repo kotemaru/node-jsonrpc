@@ -80,7 +80,12 @@ function handler(req, res) {
 			if (api == null) {
 				throw new Error("Unknown method:" + request.method + " on " + user);
 			}
-			response.result = api.call(exports, request.params);
+			var _this = {
+				getApis : getApis,
+				getApi : getApi,
+				user : user
+			};
+			response.result = api.call(_this, request.params);
 		} catch (err) {
 			response.error = err.toString();
 		}
