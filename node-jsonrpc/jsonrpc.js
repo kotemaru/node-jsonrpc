@@ -137,6 +137,10 @@ exports.init = function(path) {
 };
 
 exports.login = function(req, res) {
+	res.status(302);
+	res.set({
+		Location: "http://localhost/path?status=1" // 1=ログイン, 2=ログアウト
+	});
 	res.cookie('user', req.query.user, {
 		maxAge : 6000000
 	});
