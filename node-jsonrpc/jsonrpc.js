@@ -2,6 +2,7 @@ var TAG = "jsonrpc:";
 
 var Glob = require('glob');
 var Path = require('path');
+var FS = require('fs');
 
 var base_apis = {};
 var user_apis = {};
@@ -139,7 +140,7 @@ exports.init = function(path) {
 exports.login = function(req, res) {
 	res.status(302);
 	res.set({
-		Location: "http://localhost/path?status=1" // 1=ログイン, 2=ログアウト
+		Location : "http://localhost/path?status=1" // 1=ログイン, 2=ログアウト
 	});
 	res.cookie('user', req.query.user, {
 		maxAge : 6000000
@@ -148,3 +149,60 @@ exports.login = function(req, res) {
 		user : req.query.user
 	});
 };
+
+exports.put = function(req, res) {
+	var path = __dirname + req.path;
+	console.log(TAG,"PUT",path,"\n",req.rawBody);
+	if (req.rawBody == null) {
+		res.status(400);
+		return res.json({
+			error : "Not found body. Content-type:" + req.headers['content-type']
+		});
+	}
+	try {
+		eval("(function(){" + req.rawBody + "})()");
+	} catch (err) {
+		res.status(400);
+		return res.json({
+			error : "" + err,
+		});
+	}
+	try {
+		FS.mkdirSync(Path.dirname(path));
+	} catch (e) {
+		// ignore.
+	}
+	FS.writeFile(path, req.rawBody, null, function(err) {
+		console.log(TAG, "PUT", req.path);
+		if (err) res.status(400);
+		res.json({
+			error : err
+		});
+	});
+}
+
+exports.textBodyParser = function(req, res, next) {
+	var ctype = req.headers['content-type'] || '';
+	if (ctype.lastIndexOf("text/", 0) != 0) return;
+
+	req.rawBody = "";
+	req.on('data', function(chunk) {
+		req.rawBody += chunk;
+	});
+
+	req.on('end', function() {
+		next();
+	});
+}
+
+function _toString(obj) {
+	if (obj == null) return "null";
+	if (typeof obj == "function") return "function()";
+	if (typeof obj != "object") return "" + obj;
+
+	var str = "{";
+	for ( var k in obj) {
+		str += k + ":" + toString(obj[k]) + ",\n";
+	}
+	return str + "}";
+}
