@@ -31,7 +31,7 @@ apis/ のは以下に JS ファイルを置いて関数を定義します。
   * ユーザ毎の定義を行う場合にはJSファイルの定義場所を変えます。
     * apis/users/ユーザ名/add.js となります。
     * ユーザについては後述。
-  * this は以下の定義になります。
+  * 関数スコープの this は以下の定義になります。
     * this.user: ログインユーザ名。未ログインはnull。
     * this.getApi(user,method): 他の関数を取得。
       * 例：this.getApi(null,"add")(params): デフォルトの add() の呼び出し。
