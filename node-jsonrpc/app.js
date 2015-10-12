@@ -31,7 +31,7 @@ if ('development' == app.get('env')) {
 app.post('/apis', jsonrpc.handler);
 app.get('/login', jsonrpc.login);
 app.get('/apis/reload', jsonrpc.reload);
-app.put('/apis/users/**', jsonrpc.put);
+app.put('/apis/**', jsonrpc.put);
 
 http.createServer(app).listen(app.get('port'), function() {
 	console.log('Express server listening on port ' + app.get('port'));

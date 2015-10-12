@@ -1,3 +1,8 @@
+/**
+ * 旧ダミーショップデータ処理モジュール
+ */
+
+
 var TAG = "old-data:";
 
 var Glob = require('glob');
@@ -6,6 +11,14 @@ var FS = require('fs');
 
 var OLD_DATA_DIR = __dirname + "/old-data/";
 
+
+/**
+ * 指定されたメソッドのJSONデータを読み込む。
+ * <li>IDは必須。
+ * @param method メソッド名
+ * @param id  IDまたはIDの配列。
+ * @returns JSONデータ。見つからない場合は undefined
+ */
 function loadData(method, id) {
 	var dir = OLD_DATA_DIR + method + "/";
 	var ids = Array.isArray(id) ? id : [ id ];
@@ -16,6 +29,12 @@ function loadData(method, id) {
 	}
 	return undefined;
 }
+
+/**
+ * 指定されたメソッドのデフォルトのJSONデータを読み込む。
+ * @param method メソッド名
+ * @returns JSONデータ。見つからない場合は undefined
+ */
 function loadDefaultData(method) {
 	var dir = OLD_DATA_DIR + method + "/";
 	return loadDataSub(dir + "default.json");
